@@ -269,7 +269,10 @@ async function fetchStatesLive() {
       flavioVotes: 0,
       sectionsCounted: parseInt(d.s?.st || 0, 10),
       totalSections: parseInt(d.s?.ts || 0, 10),
-      progressPct: parseFloat(String(d.s?.pst || '0').replace(',', '.'))
+      progressPct: parseFloat(String(d.s?.pst || '0').replace(',', '.')),
+      electorate: parseInt(d.e?.te || 0, 10),
+      electorateCounted: parseInt(d.e?.est || 0, 10),
+      validVotes: parseInt(d.v?.vv || 0, 10)
     };
     for (const agr of d.carg[0].agr) {
       for (const par of agr.par) {
@@ -777,6 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (Object.keys(live).length >= 20) {
         currentStateVotes = live;
         renderMapData(currentStateVotes);
+        RegionsPanel.render(live);
         return;
       }
     } catch(e) {}

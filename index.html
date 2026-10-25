@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261025-4">
+  <link rel="stylesheet" href="style.css?v=20261025-8">
 </head>
 <body class="clean-mode">
   <div class="layout-container">
@@ -685,6 +685,40 @@
       </div>
     </section>
 
+    <!-- Apuração por Região + Projeção -->
+    <section class="regions-card">
+      <div class="map-title-wrap">
+        <span class="geo-badge">REGIÕES</span>
+        <h3 class="map-title">APURAÇÃO POR REGIÃO</h3>
+        <p class="map-subtitle">Projeção: os votos que faltam em cada estado são estimados pelo eleitorado ainda não apurado e divididos conforme a proporção atual de cada candidato no estado.</p>
+      </div>
+
+      <div id="regions-verdict" class="regions-verdict">
+        <span class="verdict-label">PROJEÇÃO DO RESULTADO FINAL</span>
+        <strong class="verdict-winner">Carregando dados do TSE…</strong>
+      </div>
+
+      <div class="regions-table-wrap">
+        <table class="regions-table">
+          <thead>
+            <tr>
+              <th scope="col">Região</th>
+              <th scope="col">Eleitores aptos</th>
+              <th scope="col">Urnas apuradas</th>
+              <th scope="col">Lula</th>
+              <th scope="col">Flávio</th>
+              <th scope="col">Projeção final</th>
+              <th scope="col">Tendência</th>
+            </tr>
+          </thead>
+          <tbody id="regions-tbody">
+            <tr><td colspan="7" class="regions-empty">Aguardando dados por estado…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="regions-note">Estimativa automática, não é resultado oficial. As urnas não são apuradas em ordem aleatória (capitais costumam entrar antes), então a tendência pode mudar. Votos do exterior não incluídos. A seta indica quem ganhou terreno desde a última atualização.</p>
+    </section>
+
     <!-- Map Floating Hover Tooltip -->
     <div id="dashboard-map-tooltip" class="dashboard-map-tooltip hidden">
       <div class="tt-header">
@@ -963,6 +997,7 @@
   </button>
 
   <script src="map-progress.js?v=20261025-3"></script>
-  <script src="app.js?v=20261025-3"></script>
+  <script src="regions.js?v=20261025-7"></script>
+  <script src="app.js?v=20261025-5"></script>
 </body>
 </html>

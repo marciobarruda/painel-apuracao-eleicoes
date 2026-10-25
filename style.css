@@ -1734,6 +1734,260 @@ body.mourning-mode .layout-container {
   stroke-width: 1.8px !important;
 }
 
+/* -------------------------------------------
+   APURAÇÃO POR REGIÃO
+------------------------------------------- */
+.regions-card {
+  margin: 0 0 24px;
+  background: linear-gradient(135deg, rgba(6, 36, 25, 0.88), rgba(4, 25, 18, 0.92));
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 223, 0, 0.3);
+  border-radius: 20px;
+  padding: 24px 28px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 156, 59, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.regions-verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.regions-verdict.lula {
+  border-color: rgba(229, 35, 41, 0.6);
+  box-shadow: inset 4px 0 0 #e52329;
+}
+
+.regions-verdict.flavio {
+  border-color: rgba(0, 102, 204, 0.6);
+  box-shadow: inset 4px 0 0 #0066cc;
+}
+
+.verdict-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffdf00;
+}
+
+.verdict-winner {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.regions-verdict.lula .verdict-winner { color: #f87171; }
+.regions-verdict.flavio .verdict-winner { color: #60a5fa; }
+
+.verdict-detail {
+  font-size: 0.85rem;
+  color: #e2e8f0;
+}
+
+.verdict-confidence {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.regions-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.regions-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.regions-table th,
+.regions-table td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.regions-table thead th {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.regions-table tbody th {
+  font-weight: 800;
+  color: #fff;
+}
+
+.regions-table small {
+  display: block;
+  grid-column: 2;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.regions-table .num {
+  font-family: var(--font-num);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.regions-table .num.lula { color: #f87171; }
+.regions-table .num.flavio { color: #60a5fa; }
+
+.regions-table .region-total th,
+.regions-table .region-total td {
+  background: rgba(255, 223, 0, 0.07);
+  border-bottom: none;
+}
+
+.region-progress {
+  height: 6px;
+  width: 100%;
+  min-width: 90px;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.region-progress div {
+  height: 100%;
+  background: linear-gradient(90deg, #009c3b, #ffdf00);
+}
+
+.lead-tag {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.lead-tag.lula { background: rgba(229, 35, 41, 0.25); color: #fca5a5; }
+.lead-tag.flavio { background: rgba(0, 102, 204, 0.3); color: #93c5fd; }
+
+.trend-arrow {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+.trend-arrow.lula { color: #f87171; }
+.trend-arrow.flavio { color: #60a5fa; }
+
+.regions-empty {
+  text-align: center !important;
+  color: var(--text-muted);
+}
+
+.regions-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .regions-card {
+    padding: 18px 14px;
+  }
+  .verdict-winner {
+    font-size: 1.2rem;
+  }
+
+  /* Tabela vira cards empilhados */
+  .regions-table-wrap {
+    overflow: visible;
+    border: none;
+  }
+  .regions-table {
+    min-width: 0;
+  }
+  .regions-table thead {
+    display: none;
+  }
+  .regions-table,
+  .regions-table tbody,
+  .regions-table tr,
+  .regions-table th,
+  .regions-table td {
+    display: block;
+    width: 100%;
+  }
+  .regions-table tr {
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .regions-table tbody th {
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.35);
+  }
+  .regions-table td {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    gap: 8px;
+    align-items: start;
+    padding: 8px 12px;
+  }
+  .regions-table td::before {
+    content: attr(data-label);
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #cbd5e1;
+    padding-top: 2px;
+  }
+  .regions-table td > *:not(.region-progress),
+  .regions-table td small {
+    grid-column: 2;
+  }
+  .regions-table .region-progress {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 6px 0 0;
+  }
+  .regions-table .num {
+    white-space: normal;
+  }
+  .regions-table .lead-tag,
+  .regions-table .trend-arrow {
+    justify-self: start;
+    width: auto;
+  }
+  .regions-table .trend-arrow {
+    margin-top: 0;
+  }
+  .regions-table td:last-child {
+    border-bottom: none;
+  }
+  .regions-empty::before {
+    content: none !important;
+  }
+}
+
 /* Floating Tooltip */
 .dashboard-map-tooltip {
   position: fixed;
