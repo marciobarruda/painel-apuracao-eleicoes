@@ -1,11 +1,11 @@
 /**
  * app.js - Painel Limpo de Apuração Presidencial
  * Dados Oficiais do TSE (Tribunal Superior Eleitoral - https://resultados.tse.jus.br/)
- * Atualização garantida a cada 5 minutos com contagem regressiva visível.
+ * Atualização garantida a cada 2 minutos com contagem regressiva visível.
  */
 
 const CONFIG = {
-  updateIntervalSeconds: 300, // 5 minutos (300s)
+  updateIntervalSeconds: 120, // 2 minutos (120s)
   tseApiUrl: 'https://resultados.tse.jus.br/oficial/ele2026/6258/dados/br/br-c0001-e006258-u.json',
   localApiUrl: 'data/tse-summary.json',
   statesApiUrl: 'data/tse-states.json',
@@ -139,10 +139,11 @@ function updateUI(data) {
 
 // Buscar dados oficiais do TSE (https://resultados.tse.jus.br/)
 async function fetchElectionData() {
+  // Ordem: proxy serverless (Vercel) → TSE direto (CORS liberado) → snapshot local como último recurso
   const endpoints = [
     CONFIG.serverlessUrl,
-    CONFIG.localApiUrl,
-    CONFIG.tseApiUrl
+    CONFIG.tseApiUrl,
+    CONFIG.localApiUrl
   ];
 
   let loadedData = null;
@@ -232,11 +233,52 @@ async function fetchElectionData() {
 
   if (loadedData) {
     updateUI(electionState);
-    if (typeof syncMapWithTse === 'function') syncMapWithTse();
   }
+  if (typeof window.syncMapWithTse === 'function') window.syncMapWithTse();
 }
 
-// Gerenciador do Contador Regressivo (5 minutos)
+// Buscar totalização dos 27 estados direto no TSE (em paralelo)
+const UFS = ['ac','al','ap','am','ba','ce','df','es','go','ma','mt','ms','mg','pa','pb','pr','pe','pi','rj','rn','rs','ro','rr','sc','sp','se','to'];
+
+async function fetchStatesLive() {
+  const results = await Promise.all(UFS.map(async (uf) => {
+    try {
+      const res = await fetch(`${CONFIG.serverlessUrl}?uf=${uf}`, { cache: 'no-store' });
+      const json = res.ok ? await res.json() : null;
+      if (json && json.carg) return [uf, json];
+    } catch (e) {}
+    try {
+      const url = CONFIG.tseApiUrl.replace(/br\/br-/, `${uf}/${uf}-`);
+      const res = await fetch(url, { cache: 'no-store' });
+      if (res.ok) return [uf, await res.json()];
+    } catch (e) {}
+    return [uf, null];
+  }));
+
+  const states = {};
+  for (const [uf, d] of results) {
+    if (!d || !d.carg) continue;
+    const entry = { lula: 0, flavio: 0, lulaVotes: 0, flavioVotes: 0 };
+    for (const agr of d.carg[0].agr) {
+      for (const par of agr.par) {
+        for (const cand of par.cand) {
+          if (cand.n === '13') {
+            entry.lula = parseFloat(cand.pvap.replace(',', '.'));
+            entry.lulaVotes = parseInt(cand.vap, 10);
+          }
+          if (cand.n === '22') {
+            entry.flavio = parseFloat(cand.pvap.replace(',', '.'));
+            entry.flavioVotes = parseInt(cand.vap, 10);
+          }
+        }
+      }
+    }
+    states[uf.toUpperCase()] = entry;
+  }
+  return states;
+}
+
+// Gerenciador do Contador Regressivo (2 minutos)
 function startCountdown() {
   if (countdownTimerId) clearInterval(countdownTimerId);
 
@@ -482,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render inicial imediato
   updateUI(electionState);
 
-  // Iniciar contagem regressiva de 5 minutos
+  // Iniciar contagem regressiva de 2 minutos
   startCountdown();
 
   // Botão de atualização imediata manual
@@ -703,6 +745,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function syncMapWithTse() {
     try {
+      const live = await fetchStatesLive();
+      if (Object.keys(live).length >= 20) {
+        currentStateVotes = live;
+        renderMapData(currentStateVotes);
+        return;
+      }
+    } catch(e) {}
+    try {
       const res = await fetch(CONFIG.statesApiUrl, { cache: 'no-store' });
       if (res.ok) {
         const json = await res.json();
@@ -716,9 +766,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMapData(BASE_STATE_VOTES);
   }
 
+  window.syncMapWithTse = syncMapWithTse;
   renderMapData(BASE_STATE_VOTES);
-  syncMapWithTse();
 
-  // Primeira checagem de rede
+  // Primeira checagem de rede (também sincroniza o mapa)
   fetchElectionData();
 });

@@ -5,7 +5,7 @@ Painel web em tempo real para acompanhamento da apuração presidencial no Brasi
 ## ✨ Recursos
 
 - **Tema Patriótico**: Paleta nas cores da bandeira do Brasil (verde, amarelo e azul) com fundo em tecido acetinado e efeito glassmorphic.
-- **Urnas Apuradas**: Contador regressivo de 5 minutos sincronizado, barra de progresso e estatísticas de votos (válidos, brancos, nulos e abstenções).
+- **Urnas Apuradas**: Contador regressivo de 2 minutos sincronizado, barra de progresso e estatísticas de votos (válidos, brancos, nulos e abstenções).
 - **Animações de Desfecho**:
   - **Vitória de Lula**: Comemoração com confetes, fanfarra triunfal, Lula dançando de óculos escuros Wayfarer e faixa presidencial, e Flávio aos prantos na cadeia da Papuda.
   - **Vitória de Flávio**: Escala de cinza total no painel (modo luto), risada diabólica animada com olhos vermelhos demoníacos, trovoadas e faixa de luto oficial.

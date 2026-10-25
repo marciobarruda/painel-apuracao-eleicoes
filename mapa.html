@@ -828,15 +828,57 @@
 
     renderMap(STATE_VOTES);
 
-    // Tentar carregar data/tse-states.json atualizado
-    fetch('data/tse-states.json')
-      .then(r => r.json())
-      .then(json => {
-        if (json && Object.keys(json).length >= 20) {
-          renderMap(json);
-        }
-      })
-      .catch(() => {});
+    // Buscar totalização dos 27 estados direto no TSE; fallback para snapshot local
+    const UFS = ['ac','al','ap','am','ba','ce','df','es','go','ma','mt','ms','mg','pa','pb','pr','pe','pi','rj','rn','rs','ro','rr','sc','sp','se','to'];
+
+    async function fetchStateLive(uf) {
+      const urls = [
+        `/api/tse?uf=${uf}`,
+        `https://resultados.tse.jus.br/oficial/ele2026/6258/dados/${uf}/${uf}-c0001-e006258-u.json`
+      ];
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          const d = res.ok ? await res.json() : null;
+          if (!d || !d.carg) continue;
+          const entry = { lula: 0, flavio: 0, lulaVotes: 0, flavioVotes: 0 };
+          for (const agr of d.carg[0].agr) {
+            for (const par of agr.par) {
+              for (const cand of par.cand) {
+                if (cand.n === '13') {
+                  entry.lula = parseFloat(cand.pvap.replace(',', '.'));
+                  entry.lulaVotes = parseInt(cand.vap, 10);
+                }
+                if (cand.n === '22') {
+                  entry.flavio = parseFloat(cand.pvap.replace(',', '.'));
+                  entry.flavioVotes = parseInt(cand.vap, 10);
+                }
+              }
+            }
+          }
+          return entry;
+        } catch (e) {}
+      }
+      return null;
+    }
+
+    async function syncStates() {
+      const results = await Promise.all(UFS.map(fetchStateLive));
+      const live = {};
+      results.forEach((entry, i) => { if (entry) live[UFS[i].toUpperCase()] = entry; });
+      if (Object.keys(live).length >= 20) {
+        renderMap(live);
+        return;
+      }
+      try {
+        const res = await fetch('data/tse-states.json', { cache: 'no-store' });
+        const json = await res.json();
+        if (json && Object.keys(json).length >= 20) renderMap(json);
+      } catch (e) {}
+    }
+
+    syncStates();
+    setInterval(syncStates, 2 * 60 * 1000);
   </script>
 </body>
 </html>
