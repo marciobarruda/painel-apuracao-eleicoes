@@ -15,6 +15,7 @@ const CONFIG = {
 
 let remainingSeconds = CONFIG.updateIntervalSeconds;
 let countdownTimerId = null;
+let serverlessAvailable = true; // false após 404 (ex.: servidor estático local sem /api)
 
 // Estado Real TSE 2026 2º Turno (https://resultados.tse.jus.br/)
 let electionState = {
@@ -149,8 +150,10 @@ async function fetchElectionData() {
   let loadedData = null;
 
   for (const url of endpoints) {
+    if (url === CONFIG.serverlessUrl && !serverlessAvailable) continue;
     try {
       const response = await fetch(url, { cache: 'no-store' });
+      if (url === CONFIG.serverlessUrl && response.status === 404) serverlessAvailable = false;
       if (response.ok) {
         const json = await response.json();
         // Se for o formato de resumo direto
@@ -234,7 +237,8 @@ async function fetchElectionData() {
   if (loadedData) {
     updateUI(electionState);
   }
-  if (typeof window.syncMapWithTse === 'function') window.syncMapWithTse();
+  if (typeof window.syncMapWithTse === 'function') await window.syncMapWithTse();
+  return Boolean(loadedData);
 }
 
 // Buscar totalização dos 27 estados direto no TSE (em paralelo)
@@ -242,7 +246,7 @@ const UFS = ['ac','al','ap','am','ba','ce','df','es','go','ma','mt','ms','mg','p
 
 async function fetchStatesLive() {
   const results = await Promise.all(UFS.map(async (uf) => {
-    try {
+    if (serverlessAvailable) try {
       const res = await fetch(`${CONFIG.serverlessUrl}?uf=${uf}`, { cache: 'no-store' });
       const json = res.ok ? await res.json() : null;
       if (json && json.carg) return [uf, json];
@@ -258,7 +262,15 @@ async function fetchStatesLive() {
   const states = {};
   for (const [uf, d] of results) {
     if (!d || !d.carg) continue;
-    const entry = { lula: 0, flavio: 0, lulaVotes: 0, flavioVotes: 0 };
+    const entry = {
+      lula: 0,
+      flavio: 0,
+      lulaVotes: 0,
+      flavioVotes: 0,
+      sectionsCounted: parseInt(d.s?.st || 0, 10),
+      totalSections: parseInt(d.s?.ts || 0, 10),
+      progressPct: parseFloat(String(d.s?.pst || '0').replace(',', '.'))
+    };
     for (const agr of d.carg[0].agr) {
       for (const par of agr.par) {
         for (const cand of par.cand) {
@@ -528,9 +540,28 @@ document.addEventListener('DOMContentLoaded', () => {
   startCountdown();
 
   // Botão de atualização imediata manual
-  document.getElementById('btn-refresh-now').addEventListener('click', () => {
+  const refreshBtn = document.getElementById('btn-refresh-now');
+  const refreshLabel = document.getElementById('btn-refresh-label');
+  refreshBtn.addEventListener('click', async () => {
+    if (refreshBtn.disabled) return;
+    refreshBtn.disabled = true;
+    refreshBtn.classList.add('loading');
+    refreshLabel.textContent = 'Atualizando…';
     remainingSeconds = CONFIG.updateIntervalSeconds;
-    fetchElectionData();
+
+    let ok = false;
+    try {
+      ok = await fetchElectionData();
+    } catch (e) {}
+
+    refreshBtn.classList.remove('loading');
+    refreshLabel.textContent = ok
+      ? `Atualizado ${new Date().toLocaleTimeString('pt-BR')} ✓`
+      : 'Falha ao atualizar';
+    setTimeout(() => {
+      refreshLabel.textContent = 'Atualizar';
+      refreshBtn.disabled = false;
+    }, 2500);
   });
 
   // Modal Close & Reopen listeners
@@ -684,6 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mapTtLula = document.getElementById('map-tt-lula');
   const mapTtFlavio = document.getElementById('map-tt-flavio');
   const mapTtLeader = document.getElementById('map-tt-leader');
+  const mapTtProgress = document.getElementById('map-tt-progress');
   const mapCountLula = document.getElementById('map-count-lula');
   const mapCountFlavio = document.getElementById('map-count-flavio');
 
@@ -696,16 +728,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!stateEl) return;
 
       const data = stateData[uf];
-      const lulaLeads = data.lula >= data.flavio;
-
-      stateEl.classList.remove('state-lula', 'state-flavio');
-      if (lulaLeads) {
-        stateEl.classList.add('state-lula');
-        lulaWins++;
-      } else {
-        stateEl.classList.add('state-flavio');
-        flavioWins++;
-      }
+      const lulaLeads = MapProgress.applyStateClass(stateEl, data);
+      if (lulaLeads) lulaWins++;
+      else flavioWins++;
 
       // Remover listeners antigos clonando o nó
       const newEl = stateEl.cloneNode(true);
@@ -718,6 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mapTtUf.textContent = uf;
         mapTtLula.textContent = `${data.lula.toFixed(2).replace('.', ',')}% (${formatBR(data.lulaVotes || 0)} votos)`;
         mapTtFlavio.textContent = `${data.flavio.toFixed(2).replace('.', ',')}% (${formatBR(data.flavioVotes || 0)} votos)`;
+        mapTtProgress.textContent = MapProgress.describeProgress(data);
 
         if (lulaLeads) {
           const diff = (data.lula - data.flavio).toFixed(2).replace('.', ',');
@@ -738,6 +764,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapTooltip) mapTooltip.classList.add('hidden');
       });
     });
+
+    MapProgress.renderLabels(document.querySelector('.brazil-interactive-svg'), stateData);
 
     if (mapCountLula) mapCountLula.textContent = lulaWins;
     if (mapCountFlavio) mapCountFlavio.textContent = flavioWins;

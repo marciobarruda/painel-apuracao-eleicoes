@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261025-3">
 </head>
 <body class="clean-mode">
   <div class="layout-container">
@@ -61,7 +61,7 @@
         </div>
         <button id="btn-refresh-now" class="refresh-btn" title="Atualizar dados imediatamente">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/></svg>
-          Atualizar
+          <span id="btn-refresh-label">Atualizar</span>
         </button>
       </div>
     </header>
@@ -148,7 +148,7 @@
         <div class="map-title-wrap">
           <span class="geo-badge">MAPA ELEITORAL</span>
           <h3 class="map-title">VOTAÇÃO POR ESTADO</h3>
-          <p class="map-subtitle">Passe o mouse sobre os estados para ver o percentual de cada candidato</p>
+          <p class="map-subtitle">Número sobre cada estado = % das seções apuradas. Passe o mouse para ver o percentual de cada candidato</p>
         </div>
         <div class="map-legend-group">
           <div class="legend-chip lula-chip">
@@ -159,6 +159,11 @@
             <span class="color-dot dot-flavio"></span>
             <span>Flávio mais votado: <strong id="map-count-flavio">13</strong> UFs</span>
           </div>
+          <div class="legend-chip done-chip" title="Estado com 100% das seções apuradas">
+            <span class="color-dot dot-lula-done"></span>
+            <span class="color-dot dot-flavio-done"></span>
+            <span>100% apurado</span>
+          </div>
           <a href="mapa.html" target="_blank" class="sim-btn btn-sim-reset" style="text-decoration: none;" title="Abrir arquivo mapa.html">
             ↗ mapa.html
           </a>
@@ -167,7 +172,7 @@
 
       <div class="map-canvas-area">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-             class="brazil-interactive-svg" viewBox="0 0 353.845 367.766" enable-background="new 0 0 353.845 367.766"
+             class="brazil-interactive-svg" viewBox="0 0 375 367.766" enable-background="new 0 0 375 367.766"
              xml:space="preserve">
         <g>
             <polygon fill="#F3F3F3" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
@@ -694,6 +699,7 @@
         <span class="tt-cand-label">Flávio:</span>
         <strong id="map-tt-flavio" class="tt-cand-val">0,00%</strong>
       </div>
+      <div id="map-tt-progress" class="map-tt-progress">Apurado: —</div>
       <div id="map-tt-leader" class="map-tt-leader">
         Liderança
       </div>
@@ -956,6 +962,7 @@
     <span id="reopen-text">Ver Animação Final</span>
   </button>
 
-  <script src="app.js"></script>
+  <script src="map-progress.js?v=20261025-3"></script>
+  <script src="app.js?v=20261025-3"></script>
 </body>
 </html>
