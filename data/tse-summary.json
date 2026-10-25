@@ -1,0 +1,35 @@
+{
+  "source": "Tribunal Superior Eleitoral (https://resultados.tse.jus.br/)",
+  "election": "Eleição Ordinária Federal - 2026 2º Turno (Código 6258)",
+  "date": "25/10/2026",
+  "time": "19:12:06",
+  "progressPct": 1.67,
+  "sectionsCounted": 8331,
+  "totalSections": 499248,
+  "totalVotes": 2138868,
+  "validVotes": 2076953,
+  "blankVotes": 21599,
+  "nullVotes": 40316,
+  "abstentionVotes": 752379,
+  "abstentionPct": 26.02,
+  "lula": {
+    "name": "LUIZ INÁCIO LULA DA SILVA",
+    "ballotName": "LULA",
+    "party": "PT",
+    "number": "13",
+    "votes": 1082535,
+    "pct": 52.12,
+    "status": "",
+    "elected": false
+  },
+  "flavio": {
+    "name": "FLAVIO NANTES BOLSONARO",
+    "ballotName": "FLAVIO BOLSONARO",
+    "party": "PL",
+    "number": "22",
+    "votes": 994418,
+    "pct": 47.88,
+    "status": "",
+    "elected": false
+  }
+}

@@ -1,0 +1,272 @@
+{
+  "AC": {
+    "lula": 39.36,
+    "flavio": 60.64,
+    "lulaVotes": 6954,
+    "flavioVotes": 10713,
+    "sectionsCounted": 119,
+    "totalSections": 2270,
+    "progressPct": 5.24,
+    "lastUpdate": "19:11:35"
+  },
+  "AL": {
+    "lula": 61.7,
+    "flavio": 38.3,
+    "lulaVotes": 7171,
+    "flavioVotes": 4451,
+    "sectionsCounted": 42,
+    "totalSections": 7101,
+    "progressPct": 0.59,
+    "lastUpdate": "19:12:05"
+  },
+  "AP": {
+    "lula": 70.7,
+    "flavio": 29.3,
+    "lulaVotes": 4797,
+    "flavioVotes": 1988,
+    "sectionsCounted": 42,
+    "totalSections": 1914,
+    "progressPct": 2.19,
+    "lastUpdate": "19:11:35"
+  },
+  "AM": {
+    "lula": 50.62,
+    "flavio": 49.38,
+    "lulaVotes": 20307,
+    "flavioVotes": 19809,
+    "sectionsCounted": 152,
+    "totalSections": 8157,
+    "progressPct": 1.86,
+    "lastUpdate": "19:01:54"
+  },
+  "BA": {
+    "lula": 71.53,
+    "flavio": 28.47,
+    "lulaVotes": 19103,
+    "flavioVotes": 7602,
+    "sectionsCounted": 97,
+    "totalSections": 35476,
+    "progressPct": 0.27,
+    "lastUpdate": "19:11:35"
+  },
+  "CE": {
+    "lula": 65.92,
+    "flavio": 34.08,
+    "lulaVotes": 5017,
+    "flavioVotes": 2594,
+    "sectionsCounted": 29,
+    "totalSections": 23765,
+    "progressPct": 0.12,
+    "lastUpdate": "19:12:05"
+  },
+  "DF": {
+    "lula": 45.13,
+    "flavio": 54.87,
+    "lulaVotes": 91033,
+    "flavioVotes": 110686,
+    "sectionsCounted": 806,
+    "totalSections": 6969,
+    "progressPct": 11.57,
+    "lastUpdate": "19:11:35"
+  },
+  "ES": {
+    "lula": 46.82,
+    "flavio": 53.18,
+    "lulaVotes": 1422,
+    "flavioVotes": 1615,
+    "sectionsCounted": 14,
+    "totalSections": 9844,
+    "progressPct": 0.14,
+    "lastUpdate": "19:12:05"
+  },
+  "GO": {
+    "lula": 45.76,
+    "flavio": 54.24,
+    "lulaVotes": 2542,
+    "flavioVotes": 3013,
+    "sectionsCounted": 19,
+    "totalSections": 15686,
+    "progressPct": 0.12,
+    "lastUpdate": "19:11:34"
+  },
+  "MA": {
+    "lula": 70.37,
+    "flavio": 29.63,
+    "lulaVotes": 39123,
+    "flavioVotes": 16475,
+    "sectionsCounted": 280,
+    "totalSections": 18093,
+    "progressPct": 1.55,
+    "lastUpdate": "19:12:05"
+  },
+  "MT": {
+    "lula": 43.57,
+    "flavio": 56.43,
+    "lulaVotes": 24936,
+    "flavioVotes": 32301,
+    "sectionsCounted": 251,
+    "totalSections": 8287,
+    "progressPct": 3.03,
+    "lastUpdate": "19:11:35"
+  },
+  "MS": {
+    "lula": 52.52,
+    "flavio": 47.48,
+    "lulaVotes": 3587,
+    "flavioVotes": 3243,
+    "sectionsCounted": 37,
+    "totalSections": 7106,
+    "progressPct": 0.52,
+    "lastUpdate": "19:11:35"
+  },
+  "MG": {
+    "lula": 49.58,
+    "flavio": 50.42,
+    "lulaVotes": 64801,
+    "flavioVotes": 65906,
+    "sectionsCounted": 457,
+    "totalSections": 52062,
+    "progressPct": 0.88,
+    "lastUpdate": "19:12:05"
+  },
+  "PA": {
+    "lula": 56.91,
+    "flavio": 43.09,
+    "lulaVotes": 190227,
+    "flavioVotes": 144035,
+    "sectionsCounted": 1396,
+    "totalSections": 20827,
+    "progressPct": 6.7,
+    "lastUpdate": "19:12:05"
+  },
+  "PB": {
+    "lula": 73.44,
+    "flavio": 26.56,
+    "lulaVotes": 111354,
+    "flavioVotes": 40276,
+    "sectionsCounted": 627,
+    "totalSections": 10712,
+    "progressPct": 5.85,
+    "lastUpdate": "19:11:35"
+  },
+  "PR": {
+    "lula": 39.02,
+    "flavio": 60.98,
+    "lulaVotes": 144253,
+    "flavioVotes": 225475,
+    "sectionsCounted": 1454,
+    "totalSections": 27142,
+    "progressPct": 5.36,
+    "lastUpdate": "19:12:05"
+  },
+  "PE": {
+    "lula": 72.64,
+    "flavio": 27.36,
+    "lulaVotes": 11749,
+    "flavioVotes": 4425,
+    "sectionsCounted": 62,
+    "totalSections": 21418,
+    "progressPct": 0.29,
+    "lastUpdate": "19:12:05"
+  },
+  "PI": {
+    "lula": 78.8,
+    "flavio": 21.2,
+    "lulaVotes": 6062,
+    "flavioVotes": 1631,
+    "sectionsCounted": 38,
+    "totalSections": 10225,
+    "progressPct": 0.37,
+    "lastUpdate": "19:12:05"
+  },
+  "RJ": {
+    "lula": 43.12,
+    "flavio": 56.88,
+    "lulaVotes": 326,
+    "flavioVotes": 430,
+    "sectionsCounted": 3,
+    "totalSections": 37675,
+    "progressPct": 0.01,
+    "lastUpdate": "19:11:35"
+  },
+  "RN": {
+    "lula": 72.44,
+    "flavio": 27.56,
+    "lulaVotes": 15498,
+    "flavioVotes": 5896,
+    "sectionsCounted": 86,
+    "totalSections": 8115,
+    "progressPct": 1.06,
+    "lastUpdate": "19:11:35"
+  },
+  "RS": {
+    "lula": 34.07,
+    "flavio": 65.93,
+    "lulaVotes": 8900,
+    "flavioVotes": 17223,
+    "sectionsCounted": 112,
+    "totalSections": 27547,
+    "progressPct": 0.41,
+    "lastUpdate": "19:12:05"
+  },
+  "RO": {
+    "lula": 39.2,
+    "flavio": 60.8,
+    "lulaVotes": 21574,
+    "flavioVotes": 33466,
+    "sectionsCounted": 260,
+    "totalSections": 4698,
+    "progressPct": 5.53,
+    "lastUpdate": "19:11:35"
+  },
+  "RR": {
+    "lula": 69.3,
+    "flavio": 30.7,
+    "lulaVotes": 896,
+    "flavioVotes": 397,
+    "sectionsCounted": 6,
+    "totalSections": 1519,
+    "progressPct": 0.39,
+    "lastUpdate": "19:01:55"
+  },
+  "SC": {
+    "lula": 47.53,
+    "flavio": 52.47,
+    "lulaVotes": 35643,
+    "flavioVotes": 39344,
+    "sectionsCounted": 273,
+    "totalSections": 17326,
+    "progressPct": 1.58,
+    "lastUpdate": "19:11:35"
+  },
+  "SP": {
+    "lula": 43.23,
+    "flavio": 56.77,
+    "lulaVotes": 1854,
+    "flavioVotes": 2435,
+    "sectionsCounted": 20,
+    "totalSections": 103656,
+    "progressPct": 0.02,
+    "lastUpdate": "19:11:35"
+  },
+  "SE": {
+    "lula": 0,
+    "flavio": 0,
+    "lulaVotes": 0,
+    "flavioVotes": 0,
+    "sectionsCounted": 0,
+    "totalSections": 5923,
+    "progressPct": 0,
+    "lastUpdate": "19:11:04"
+  },
+  "TO": {
+    "lula": 52.79,
+    "flavio": 47.21,
+    "lulaVotes": 25468,
+    "flavioVotes": 22774,
+    "sectionsCounted": 246,
+    "totalSections": 4384,
+    "progressPct": 5.61,
+    "lastUpdate": "19:11:35"
+  }
+}

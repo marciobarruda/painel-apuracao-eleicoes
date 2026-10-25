@@ -1505,3 +1505,223 @@ body.mourning-mode .layout-container {
   }
 }
 
+/* ========================================================
+   MAPA DO BRASIL - ESTILOS E TOOLTIP
+   ======================================================== */
+.brazil-map-card {
+  margin: 32px 0 24px;
+  background: linear-gradient(135deg, rgba(6, 36, 25, 0.88), rgba(4, 25, 18, 0.92));
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 223, 0, 0.3);
+  border-radius: 20px;
+  padding: 24px 28px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 156, 59, 0.2);
+  transition: all 0.3s ease;
+}
+
+.map-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.map-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.geo-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ffdf00;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.map-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #ffdf00, #ffffff, #86efac);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.map-subtitle {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.map-legend-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.lula-chip {
+  border-color: rgba(229, 35, 41, 0.4);
+  color: #fca5a5;
+}
+
+.flavio-chip {
+  border-color: rgba(0, 102, 204, 0.4);
+  color: #93c5fd;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.dot-lula {
+  background: #e52329;
+  box-shadow: 0 0 8px rgba(229, 35, 41, 0.8);
+}
+
+.dot-flavio {
+  background: #0066cc;
+  box-shadow: 0 0 8px rgba(0, 102, 204, 0.8);
+}
+
+.map-canvas-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0 8px;
+  position: relative;
+}
+
+.brazil-interactive-svg {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.6));
+}
+
+/* Cores de preenchimento dos estados */
+.state {
+  cursor: pointer;
+  fill: #475569;
+  stroke: #ffffff;
+  stroke-width: 0.65px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: fill 0.22s ease, filter 0.22s ease, stroke-width 0.22s ease;
+}
+
+.state.state-lula {
+  fill: #e52329;
+}
+
+.state.state-flavio {
+  fill: #0066cc;
+}
+
+.state:hover {
+  filter: brightness(1.35) drop-shadow(0 0 8px rgba(255, 223, 0, 0.9));
+  stroke: #ffdf00 !important;
+  stroke-width: 1.8px !important;
+}
+
+/* Floating Tooltip */
+.dashboard-map-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: rgba(10, 17, 26, 0.96);
+  border: 1px solid #ffdf00;
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+  z-index: 99999;
+  min-width: 190px;
+  transform: translate(-50%, -120%);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dashboard-map-tooltip.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.dashboard-map-tooltip .tt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.map-tt-name {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: #fff;
+}
+
+.map-tt-uf {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #ffdf00;
+  font-weight: 900;
+}
+
+.map-tt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  margin-bottom: 4px;
+}
+
+.tt-cand-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tt-cand-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+}
+
+.tt-row-lula .tt-cand-val {
+  color: #f87171;
+}
+
+.tt-row-flavio .tt-cand-val {
+  color: #60a5fa;
+}
+
+.map-tt-leader {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+

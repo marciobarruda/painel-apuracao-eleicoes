@@ -1,38 +1,41 @@
 /**
  * app.js - Painel Limpo de Apuração Presidencial
+ * Dados Oficiais do TSE (Tribunal Superior Eleitoral - https://resultados.tse.jus.br/)
  * Atualização garantida a cada 5 minutos com contagem regressiva visível.
  */
 
 const CONFIG = {
   updateIntervalSeconds: 300, // 5 minutos (300s)
-  tseApiUrl: 'https://resultados.tse.jus.br/oficial/ele2022/545/dados-simplificados/br/br-c0001-e000545-r.json',
-  proxyUrl: 'https://api.allorigins.win/raw?url=',
+  tseApiUrl: 'https://resultados.tse.jus.br/oficial/ele2026/6258/dados/br/br-c0001-e006258-u.json',
+  localApiUrl: 'data/tse-summary.json',
+  statesApiUrl: 'data/tse-states.json',
+  serverlessUrl: '/api/tse',
   circumference: 741.42 // 2 * PI * 118
 };
 
 let remainingSeconds = CONFIG.updateIntervalSeconds;
 let countdownTimerId = null;
 
-// Mock / Estado base para inicialização ou fallback
+// Estado Real TSE 2026 2º Turno (https://resultados.tse.jus.br/)
 let electionState = {
-  progressPct: 88.54,
-  sectionsCounted: 417975,
-  totalSections: 472075,
-  totalVotes: 108420310,
-  validVotes: 103980140,
-  blankVotes: 1540110,
-  nullVotes: 2900060,
-  abstentionVotes: 26840900,
-  abstentionPct: '19.82',
+  progressPct: 1.67,
+  sectionsCounted: 8331,
+  totalSections: 499248,
+  totalVotes: 2138868,
+  validVotes: 2076953,
+  blankVotes: 21599,
+  nullVotes: 40316,
+  abstentionVotes: 752379,
+  abstentionPct: '26.02',
   lula: {
-    votes: 52925891,
-    pct: 50.90
+    votes: 1082535,
+    pct: 52.12
   },
   flavio: {
-    votes: 51054249,
-    pct: 49.10
+    votes: 994418,
+    pct: 47.88
   },
-  lastUpdate: new Date().toLocaleTimeString('pt-BR')
+  lastUpdate: '19:12:06'
 };
 
 // Formatação PT-BR (ex: 52.925.891)
@@ -134,84 +137,103 @@ function updateUI(data) {
   document.getElementById('stat-timestamp').textContent = data.lastUpdate;
 }
 
-// Buscar dados oficiais ou simular avanço real se endpoint inacessível
+// Buscar dados oficiais do TSE (https://resultados.tse.jus.br/)
 async function fetchElectionData() {
-  const targetUrl = `${CONFIG.proxyUrl}${encodeURIComponent(CONFIG.tseApiUrl)}`;
+  const endpoints = [
+    CONFIG.serverlessUrl,
+    CONFIG.localApiUrl,
+    CONFIG.tseApiUrl
+  ];
 
-  try {
-    const response = await fetch(targetUrl, { cache: 'no-store' });
-    if (!response.ok) throw new Error('Falha HTTP');
+  let loadedData = null;
 
-    const json = await response.json();
-    if (json && json.cand && json.cand.length >= 2) {
-      const parseNum = (v) => parseInt(String(v || '0').replace(/\./g, ''), 10) || 0;
-      const parsePct = (v) => parseFloat(String(v || '0').replace(',', '.')) || 0;
+  for (const url of endpoints) {
+    try {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (response.ok) {
+        const json = await response.json();
+        // Se for o formato de resumo direto
+        if (json && json.lula && json.flavio && json.totalSections) {
+          electionState = {
+            progressPct: json.progressPct,
+            sectionsCounted: json.sectionsCounted,
+            totalSections: json.totalSections,
+            totalVotes: json.totalVotes,
+            validVotes: json.validVotes,
+            blankVotes: json.blankVotes,
+            nullVotes: json.nullVotes,
+            abstentionVotes: json.abstentionVotes,
+            abstentionPct: String(json.abstentionPct).replace('.', ','),
+            lula: {
+              votes: json.lula.votes,
+              pct: json.lula.pct
+            },
+            flavio: {
+              votes: json.flavio.votes,
+              pct: json.flavio.pct
+            },
+            lastUpdate: json.time || new Date().toLocaleTimeString('pt-BR')
+          };
+          loadedData = electionState;
+          break;
+        }
 
-      const c1 = json.cand[0];
-      const c2 = json.cand[1];
+        // Se for o formato bruto oficial do TSE (br-c0001-e006258-u.json)
+        if (json && json.carg && json.carg[0] && json.carg[0].agr) {
+          let lulaVotes = 0, lulaPct = 0;
+          let flavioVotes = 0, flavioPct = 0;
 
-      electionState = {
-        progressPct: parsePct(json.pst),
-        sectionsCounted: parseNum(json.s),
-        totalSections: parseNum(json.e) || 472075,
-        totalVotes: parseNum(json.tv),
-        validVotes: parseNum(json.vv),
-        blankVotes: parseNum(json.vb),
-        nullVotes: parseNum(json.vn),
-        abstentionVotes: parseNum(json.a),
-        abstentionPct: '19.82',
-        lula: {
-          votes: parseNum(c1.vap),
-          pct: parsePct(c1.pvap)
-        },
-        flavio: {
-          votes: parseNum(c2.vap),
-          pct: parsePct(c2.pvap)
-        },
-        lastUpdate: json.ht || new Date().toLocaleTimeString('pt-BR')
-      };
+          for (const agr of json.carg[0].agr) {
+            for (const par of agr.par) {
+              for (const cand of par.cand) {
+                if (cand.n === '13') {
+                  lulaVotes = parseInt(cand.vap, 10);
+                  lulaPct = parseFloat(cand.pvap.replace(',', '.'));
+                }
+                if (cand.n === '22') {
+                  flavioVotes = parseInt(cand.vap, 10);
+                  flavioPct = parseFloat(cand.pvap.replace(',', '.'));
+                }
+              }
+            }
+          }
 
-      updateUI(electionState);
-      return;
+          const parseNum = (v) => parseInt(String(v || '0').replace(/\./g, ''), 10) || 0;
+          const parsePct = (v) => parseFloat(String(v || '0').replace(',', '.')) || 0;
+
+          electionState = {
+            progressPct: parsePct(json.s?.pst),
+            sectionsCounted: parseNum(json.s?.st),
+            totalSections: parseNum(json.s?.ts) || 499248,
+            totalVotes: parseNum(json.v?.tv),
+            validVotes: parseNum(json.v?.vv),
+            blankVotes: parseNum(json.v?.vb),
+            nullVotes: parseNum(json.v?.vn),
+            abstentionVotes: parseNum(json.e?.a),
+            abstentionPct: String(json.e?.pa || '26,02').replace('.', ','),
+            lula: {
+              votes: lulaVotes,
+              pct: lulaPct
+            },
+            flavio: {
+              votes: flavioVotes,
+              pct: flavioPct
+            },
+            lastUpdate: json.hg || new Date().toLocaleTimeString('pt-BR')
+          };
+          loadedData = electionState;
+          break;
+        }
+      }
+    } catch (e) {
+      // Tenta próximo endpoint
     }
-  } catch (err) {
-    // Modo de apuração ao vivo autônomo (incremento a cada 5 minutos caso TSE esteja sem dados novos)
-    simulateTick();
-  }
-}
-
-// Simulação de avanço a cada rodada de 5 minutos
-function simulateTick() {
-  if (electionState.progressPct < 100) {
-    // Avança cerca de 1.8% a 3.2% de urnas a cada 5 minutos
-    const increment = 1.8 + Math.random() * 1.4;
-    electionState.progressPct = Math.min(100, electionState.progressPct + increment);
-    electionState.sectionsCounted = Math.round(electionState.totalSections * (electionState.progressPct / 100));
-
-    // Acréscimo proporcional de votos
-    const addedVoters = Math.round(472075 * (increment / 100) * 230);
-    const addedValid = Math.round(addedVoters * 0.95);
-
-    // Dinâmica de voto
-    const lulaShare = 0.5090 + (Math.random() - 0.48) * 0.004;
-    const addedLula = Math.round(addedValid * lulaShare);
-    const addedFlavio = addedValid - addedLula;
-
-    electionState.lula.votes += addedLula;
-    electionState.flavio.votes += addedFlavio;
-
-    const totalValid = electionState.lula.votes + electionState.flavio.votes;
-    electionState.lula.pct = (electionState.lula.votes / totalValid) * 100;
-    electionState.flavio.pct = (electionState.flavio.votes / totalValid) * 100;
-
-    electionState.validVotes = totalValid;
-    electionState.totalVotes += addedVoters;
-    electionState.blankVotes += Math.round(addedVoters * 0.016);
-    electionState.nullVotes += Math.round(addedVoters * 0.034);
-    electionState.lastUpdate = new Date().toLocaleTimeString('pt-BR');
   }
 
-  updateUI(electionState);
+  if (loadedData) {
+    updateUI(electionState);
+    if (typeof syncMapWithTse === 'function') syncMapWithTse();
+  }
 }
 
 // Gerenciador do Contador Regressivo (5 minutos)
@@ -545,27 +567,157 @@ document.addEventListener('DOMContentLoaded', () => {
     lastWinner = null;
 
     electionState = {
-      progressPct: 88.54,
-      sectionsCounted: 417975,
-      totalSections: 472075,
-      totalVotes: 108420310,
-      validVotes: 103980140,
-      blankVotes: 1540110,
-      nullVotes: 2900060,
-      abstentionVotes: 26840900,
-      abstentionPct: '19.82',
+      progressPct: 1.67,
+      sectionsCounted: 8331,
+      totalSections: 499248,
+      totalVotes: 2138868,
+      validVotes: 2076953,
+      blankVotes: 21599,
+      nullVotes: 40316,
+      abstentionVotes: 752379,
+      abstentionPct: '26.02',
       lula: {
-        votes: 52925891,
-        pct: 50.90
+        votes: 1082535,
+        pct: 52.12
       },
       flavio: {
-        votes: 51054249,
-        pct: 49.10
+        votes: 994418,
+        pct: 47.88
       },
-      lastUpdate: new Date().toLocaleTimeString('pt-BR')
+      lastUpdate: '19:12:06'
     };
     updateUI(electionState);
+    renderMapData(BASE_STATE_VOTES);
   });
+
+  // ========================================================
+  // MAPA DO BRASIL INTERATIVO (DADOS REAIS TSE 2026)
+  // ========================================================
+  const STATE_NAMES = {
+    'AC': 'Acre', 'AL': 'Alagoas', 'AP': 'Amapá', 'AM': 'Amazonas',
+    'BA': 'Bahia', 'CE': 'Ceará', 'DF': 'Distrito Federal', 'ES': 'Espírito Santo',
+    'GO': 'Goiás', 'MA': 'Maranhão', 'MT': 'Mato Grosso', 'MS': 'Mato Grosso do Sul',
+    'MG': 'Minas Gerais', 'PA': 'Pará', 'PB': 'Paraíba', 'PR': 'Paraná',
+    'PE': 'Pernambuco', 'PI': 'Piauí', 'RJ': 'Rio de Janeiro', 'RN': 'Rio Grande do Norte',
+    'RS': 'Rio Grande do Sul', 'RO': 'Rondônia', 'RR': 'Roraima', 'SC': 'Santa Catarina',
+    'SP': 'São Paulo', 'SE': 'Sergipe', 'TO': 'Tocantins'
+  };
+
+  // Dados Reais Oficiais do TSE (https://resultados.tse.jus.br/)
+  const BASE_STATE_VOTES = {
+    'AC': { lula: 38.91, flavio: 61.09, lulaVotes: 6671, flavioVotes: 10475 },
+    'AL': { lula: 61.70, flavio: 38.30, lulaVotes: 7171, flavioVotes: 4451 },
+    'AP': { lula: 70.70, flavio: 29.30, lulaVotes: 4797, flavioVotes: 1988 },
+    'AM': { lula: 50.62, flavio: 49.38, lulaVotes: 20307, flavioVotes: 19809 },
+    'BA': { lula: 71.52, flavio: 28.48, lulaVotes: 18965, flavioVotes: 7552 },
+    'CE': { lula: 65.92, flavio: 34.08, lulaVotes: 5017, flavioVotes: 2594 },
+    'DF': { lula: 45.11, flavio: 54.89, lulaVotes: 89778, flavioVotes: 109255 },
+    'ES': { lula: 46.82, flavio: 53.18, lulaVotes: 1422, flavioVotes: 1615 },
+    'GO': { lula: 45.66, flavio: 54.34, lulaVotes: 2410, flavioVotes: 2868 },
+    'MA': { lula: 70.26, flavio: 29.74, lulaVotes: 38628, flavioVotes: 16349 },
+    'MT': { lula: 43.88, flavio: 56.12, lulaVotes: 24268, flavioVotes: 31043 },
+    'MS': { lula: 52.33, flavio: 47.67, lulaVotes: 3469, flavioVotes: 3160 },
+    'MG': { lula: 49.63, flavio: 50.37, lulaVotes: 61653, flavioVotes: 62575 },
+    'PA': { lula: 56.93, flavio: 43.07, lulaVotes: 188036, flavioVotes: 142271 },
+    'PB': { lula: 73.55, flavio: 26.45, lulaVotes: 108808, flavioVotes: 39131 },
+    'PR': { lula: 39.08, flavio: 60.92, lulaVotes: 139223, flavioVotes: 217057 },
+    'PE': { lula: 72.64, flavio: 27.36, lulaVotes: 27154, flavioVotes: 10228 },
+    'PI': { lula: 75.83, flavio: 24.17, lulaVotes: 4212, flavioVotes: 1342 },
+    'RJ': { lula: 43.12, flavio: 56.88, lulaVotes: 326, flavioVotes: 430 },
+    'RN': { lula: 64.91, flavio: 35.09, lulaVotes: 5122, flavioVotes: 2769 },
+    'RS': { lula: 45.72, flavio: 54.28, lulaVotes: 5237, flavioVotes: 6218 },
+    'RO': { lula: 33.15, flavio: 66.85, lulaVotes: 1205, flavioVotes: 2430 },
+    'RR': { lula: 26.40, flavio: 73.60, lulaVotes: 945, flavioVotes: 2635 },
+    'SC': { lula: 31.84, flavio: 68.16, lulaVotes: 1342, flavioVotes: 2873 },
+    'SP': { lula: 43.23, flavio: 56.77, lulaVotes: 1854, flavioVotes: 2435 },
+    'SE': { lula: 68.27, flavio: 31.73, lulaVotes: 2419, flavioVotes: 1124 },
+    'TO': { lula: 53.04, flavio: 46.96, lulaVotes: 8710, flavioVotes: 7713 }
+  };
+
+  let currentStateVotes = { ...BASE_STATE_VOTES };
+
+  const mapTooltip = document.getElementById('dashboard-map-tooltip');
+  const mapTtName = document.getElementById('map-tt-name');
+  const mapTtUf = document.getElementById('map-tt-uf');
+  const mapTtLula = document.getElementById('map-tt-lula');
+  const mapTtFlavio = document.getElementById('map-tt-flavio');
+  const mapTtLeader = document.getElementById('map-tt-leader');
+  const mapCountLula = document.getElementById('map-count-lula');
+  const mapCountFlavio = document.getElementById('map-count-flavio');
+
+  function renderMapData(stateData) {
+    let lulaWins = 0;
+    let flavioWins = 0;
+
+    Object.keys(stateData).forEach(uf => {
+      const stateEl = document.getElementById(uf);
+      if (!stateEl) return;
+
+      const data = stateData[uf];
+      const lulaLeads = data.lula >= data.flavio;
+
+      stateEl.classList.remove('state-lula', 'state-flavio');
+      if (lulaLeads) {
+        stateEl.classList.add('state-lula');
+        lulaWins++;
+      } else {
+        stateEl.classList.add('state-flavio');
+        flavioWins++;
+      }
+
+      // Remover listeners antigos clonando o nó
+      const newEl = stateEl.cloneNode(true);
+      stateEl.parentNode.replaceChild(newEl, stateEl);
+
+      newEl.addEventListener('mousemove', (e) => {
+        if (!mapTooltip) return;
+
+        mapTtName.textContent = STATE_NAMES[uf] || uf;
+        mapTtUf.textContent = uf;
+        mapTtLula.textContent = `${data.lula.toFixed(2).replace('.', ',')}% (${formatBR(data.lulaVotes || 0)} votos)`;
+        mapTtFlavio.textContent = `${data.flavio.toFixed(2).replace('.', ',')}% (${formatBR(data.flavioVotes || 0)} votos)`;
+
+        if (lulaLeads) {
+          const diff = (data.lula - data.flavio).toFixed(2).replace('.', ',');
+          mapTtLeader.textContent = `🔴 Lula lidera (+${diff} p.p.)`;
+          mapTtLeader.style.color = '#f87171';
+        } else {
+          const diff = (data.flavio - data.lula).toFixed(2).replace('.', ',');
+          mapTtLeader.textContent = `🔵 Flávio lidera (+${diff} p.p.)`;
+          mapTtLeader.style.color = '#60a5fa';
+        }
+
+        mapTooltip.style.left = `${e.clientX}px`;
+        mapTooltip.style.top = `${e.clientY - 12}px`;
+        mapTooltip.classList.remove('hidden');
+      });
+
+      newEl.addEventListener('mouseleave', () => {
+        if (mapTooltip) mapTooltip.classList.add('hidden');
+      });
+    });
+
+    if (mapCountLula) mapCountLula.textContent = lulaWins;
+    if (mapCountFlavio) mapCountFlavio.textContent = flavioWins;
+  }
+
+  async function syncMapWithTse() {
+    try {
+      const res = await fetch(CONFIG.statesApiUrl, { cache: 'no-store' });
+      if (res.ok) {
+        const json = await res.json();
+        if (json && Object.keys(json).length >= 20) {
+          currentStateVotes = json;
+          renderMapData(currentStateVotes);
+          return;
+        }
+      }
+    } catch(e) {}
+    renderMapData(BASE_STATE_VOTES);
+  }
+
+  renderMapData(BASE_STATE_VOTES);
+  syncMapWithTse();
 
   // Primeira checagem de rede
   fetchElectionData();
