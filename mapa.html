@@ -59,8 +59,9 @@
 
     .legend-bar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      gap: 24px;
+      gap: 10px 24px;
       margin-bottom: 20px;
     }
 
@@ -202,6 +203,13 @@
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.08);
       color: #e2e8f0;
+    }
+    @media (max-width: 640px) {
+      body { padding: 12px; }
+      .map-card-standalone { padding: 20px 14px; border-radius: 18px; }
+      .header-box h1 { font-size: 1.2rem; }
+      .legend-pill { font-size: 0.78rem; padding: 5px 12px; }
+      .map-frame { padding: 0; }
     }
   </style>
 </head>

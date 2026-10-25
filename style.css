@@ -589,6 +589,29 @@ body.clean-mode {
   .clean-footer {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  body.clean-mode {
+    padding: 12px;
+  }
+  .clean-header {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+  .page-heading {
+    font-size: 1.1rem;
+  }
+  .urnas-subinfo {
+    flex-wrap: wrap;
+    gap: 2px 12px;
+  }
+  .header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sim-buttons-group {
+    flex-wrap: wrap;
+  }
 }
 
 /* ========================================================
