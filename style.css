@@ -1,0 +1,1507 @@
+:root {
+  --bg-dark: #061a12;
+  --panel-bg: rgba(6, 32, 22, 0.82);
+  --panel-card-bg: rgba(8, 38, 26, 0.84);
+  --border-color: rgba(255, 223, 0, 0.28);
+  --border-green: rgba(0, 156, 59, 0.45);
+
+  --brazil-green: #009c3b;
+  --brazil-yellow: #ffdf00;
+  --brazil-blue: #002776;
+  --brazil-white: #ffffff;
+
+  --cand-lula: #e52329;
+  --cand-lula-glow: rgba(229, 35, 41, 0.4);
+  --cand-flavio: #0066cc;
+  --cand-flavio-glow: rgba(0, 102, 204, 0.4);
+
+  --text-white: #ffffff;
+  --text-dim: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --font-main: 'Outfit', sans-serif;
+  --font-num: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.clean-mode {
+  font-family: var(--font-main);
+  background-color: #061a12;
+  background-image: 
+    linear-gradient(135deg, rgba(0, 39, 118, 0.62) 0%, rgba(0, 156, 59, 0.68) 45%, rgba(4, 28, 18, 0.84) 100%),
+    url('assets/bandeira-brasil.jpg');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-white);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.layout-container {
+  width: 100%;
+  max-width: 1380px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* -------------------------------------------
+   CLEAN HEADER & URNAS PROGRESS (BRAZIL THEME)
+------------------------------------------- */
+.clean-header {
+  background: linear-gradient(135deg, rgba(6, 36, 25, 0.88), rgba(4, 25, 18, 0.92));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 223, 0, 0.35);
+  border-radius: 18px;
+  padding: 18px 28px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 156, 59, 0.25);
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 156, 59, 0.25);
+  border: 1px solid rgba(0, 156, 59, 0.6);
+  color: #86efac;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.live-pill .dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.page-heading {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, #ffdf00, #ffffff, #86efac);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+
+/* Urnas Progress Bar */
+.urnas-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.urnas-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.urnas-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #cbd5e1;
+}
+
+.urnas-number {
+  font-family: var(--font-num);
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #ffdf00;
+  text-shadow: 0 0 14px rgba(255, 223, 0, 0.5);
+}
+
+.urnas-progress-track {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 223, 0, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.urnas-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #009c3b, #10b981, #ffdf00);
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 14px rgba(255, 223, 0, 0.65);
+}
+
+.urnas-subinfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.update-countdown strong {
+  font-family: var(--font-num);
+  color: #38bdf8;
+}
+
+/* Refresh Button */
+.refresh-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* -------------------------------------------
+   MAIN SIDE-BY-SIDE CANDIDATE CARDS
+------------------------------------------- */
+.battle-arena {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 32px;
+}
+
+.hero-candidate-card {
+  background: linear-gradient(135deg, rgba(8, 38, 26, 0.88), rgba(5, 26, 18, 0.92));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 223, 0, 0.28);
+  border-radius: 24px;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 156, 59, 0.18);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-candidate-card.leading {
+  border-color: rgba(255, 223, 0, 0.65);
+  transform: translateY(-4px);
+}
+
+.cand-lula.leading {
+  box-shadow: 0 20px 50px rgba(229, 35, 41, 0.25), 0 0 25px rgba(255, 223, 0, 0.3);
+}
+
+.cand-flavio.leading {
+  box-shadow: 0 20px 50px rgba(0, 102, 204, 0.25), 0 0 25px rgba(255, 223, 0, 0.3);
+}
+
+/* Ribbon Winner */
+.winner-tag {
+  position: absolute;
+  top: -14px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #000;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 4px 18px;
+  border-radius: 999px;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5);
+}
+
+/* Big Circular Photo & Progress Gauge */
+.hero-avatar-wrapper {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.circular-progress-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circle-base {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 12;
+}
+
+.circle-active {
+  fill: none;
+  stroke-width: 13;
+  stroke-linecap: round;
+  /* 2 * PI * 118 = 741.42 */
+  stroke-dasharray: 741.42;
+  stroke-dashoffset: 741.42;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.circle-lula {
+  stroke: var(--cand-lula);
+  filter: drop-shadow(0 0 12px var(--cand-lula-glow));
+}
+
+.circle-flavio {
+  stroke: var(--cand-flavio);
+  filter: drop-shadow(0 0 12px var(--cand-flavio-glow));
+}
+
+.hero-photo-frame {
+  width: 208px;
+  height: 208px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 3px rgba(255, 255, 255, 0.15);
+  background: #111827;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.party-badge {
+  position: absolute;
+  bottom: 10px;
+  font-family: var(--font-num);
+  font-size: 1.15rem;
+  font-weight: 900;
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  z-index: 5;
+}
+
+.badge-lula { background: var(--cand-lula); }
+.badge-flavio { background: var(--cand-flavio); }
+
+/* Candidate Info */
+.hero-candidate-info {
+  margin-bottom: 16px;
+}
+
+.hero-name {
+  font-size: 2.1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.hero-party {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Big Vote Numbers */
+.hero-vote-display {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vote-percent {
+  font-family: var(--font-num);
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.percent-lula {
+  color: var(--cand-lula);
+  text-shadow: 0 0 30px var(--cand-lula-glow);
+}
+
+.percent-flavio {
+  color: var(--cand-flavio);
+  text-shadow: 0 0 30px var(--cand-flavio-glow);
+}
+
+.vote-count {
+  font-family: var(--font-num);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+/* VS Center Divider */
+.vs-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.vs-text {
+  font-family: var(--font-num);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diff-badge {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 16px;
+  text-align: center;
+  min-width: 170px;
+}
+
+.diff-label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.diff-val {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.diff-pp {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 0.8rem;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+/* -------------------------------------------
+   HORIZONTAL COMPARISON BAR
+------------------------------------------- */
+.ratio-track-container {
+  padding: 0 8px;
+}
+
+.ratio-track {
+  height: 22px;
+  border-radius: 11px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  position: relative;
+  overflow: visible;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.bar-lula {
+  height: 100%;
+  background: linear-gradient(90deg, #991b1b, var(--cand-lula));
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 18px var(--cand-lula-glow);
+}
+
+.bar-flavio {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cand-flavio), #1d4ed8);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 18px var(--cand-flavio-glow);
+}
+
+.mark-half {
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  bottom: -8px;
+  width: 3px;
+  background: #ffffff;
+  transform: translateX(-50%);
+  z-index: 5;
+  box-shadow: 0 0 10px #ffffff;
+}
+
+.mark-half span {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* -------------------------------------------
+   MINIMAL STATS FOOTER
+------------------------------------------- */
+.clean-footer {
+  background: linear-gradient(135deg, rgba(6, 36, 25, 0.88), rgba(4, 25, 18, 0.92));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 223, 0, 0.3);
+  border-radius: 16px;
+  padding: 14px 24px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-pill .label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.stat-pill strong {
+  font-family: var(--font-num);
+  font-size: 1.05rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.update-pill strong {
+  color: #38bdf8;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* -------------------------------------------
+   RESPONSIVE
+------------------------------------------- */
+@media (max-width: 1024px) {
+  .battle-arena {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .clean-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .clean-footer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-avatar-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  .hero-photo-frame {
+    width: 160px;
+    height: 160px;
+  }
+  .circular-progress-svg {
+    transform: rotate(-90deg) scale(0.77);
+  }
+  .vote-percent {
+    font-size: 3rem;
+  }
+  .clean-footer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========================================================
+   HEADER SIMULATION BUTTONS
+   ======================================================== */
+.sim-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.btn-sim-lula {
+  background: rgba(229, 35, 41, 0.2);
+  border-color: rgba(229, 35, 41, 0.5);
+  color: #fca5a5;
+}
+.btn-sim-lula:hover {
+  background: rgba(229, 35, 41, 0.45);
+  box-shadow: 0 0 16px rgba(229, 35, 41, 0.5);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.btn-sim-flavio {
+  background: rgba(0, 102, 204, 0.2);
+  border-color: rgba(0, 102, 204, 0.5);
+  color: #93c5fd;
+}
+.btn-sim-flavio:hover {
+  background: rgba(0, 102, 204, 0.45);
+  box-shadow: 0 0 16px rgba(0, 102, 204, 0.5);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.btn-sim-reset {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+}
+.btn-sim-reset:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+/* ========================================================
+   MOURNING MODE (FLÁVIO WINS -> FULL GRAYSCALE)
+   ======================================================== */
+body.mourning-mode {
+  background-color: #050505 !important;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(40, 40, 40, 0.8) 0%, transparent 60%),
+    linear-gradient(to bottom, #111111, #050505) !important;
+}
+
+body.mourning-mode .layout-container {
+  filter: grayscale(100%) contrast(1.15) brightness(0.92);
+  transition: filter 1s ease-in-out;
+}
+
+/* Mourning Alert Banner */
+.mourning-banner {
+  background: linear-gradient(90deg, #18181b, #09090b, #18181b);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.mourning-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mourning-icon {
+  font-size: 1.6rem;
+}
+
+.mourning-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mourning-text strong {
+  color: #f43f5e;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+}
+
+.mourning-text span {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.mourning-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mourning-btn-reopen {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: #fda4af;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mourning-btn-reopen:hover {
+  background: rgba(244, 63, 94, 0.3);
+  color: #fff;
+}
+
+.mourning-btn-restore {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mourning-btn-restore:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ========================================================
+   OUTCOME MODAL STAGE
+   ======================================================== */
+.outcome-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.outcome-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 7, 14, 0.88);
+  backdrop-filter: blur(20px);
+}
+
+.outcome-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.outcome-dialog {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(10, 14, 23, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 28px;
+  padding: 32px 36px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+  animation: modalPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 94vh;
+  overflow-y: auto;
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.88); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.outcome-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.outcome-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-ring-dot {
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulse 1.2s infinite;
+}
+
+.outcome-badge {
+  font-family: var(--font-num);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #34d399;
+}
+
+.outcome-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-sound-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.modal-sound-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.modal-close-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.stage-title-wrap {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.stage-title {
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.lula-glow-text {
+  background: linear-gradient(90deg, #f87171, #fbbf24, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 16px rgba(239, 68, 68, 0.4));
+}
+
+.stage-subtitle {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ========================================================
+   STAGE 1: LULA WINS (CELEBRATION DUO ARENA)
+   ======================================================== */
+.stage-arena-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.outcome-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-role-pill {
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+  display: inline-block;
+}
+
+.gold-pill {
+  background: linear-gradient(90deg, #b45309, #f59e0b);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+}
+
+.red-pill {
+  background: rgba(220, 38, 38, 0.25);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #f87171;
+}
+
+.black-pill {
+  background: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #e2e8f0;
+}
+
+/* Character Stages */
+.character-stage {
+  width: 100%;
+  min-height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+/* Lula Dancing Animation */
+.card-lula-celebration {
+  background: radial-gradient(circle at 50% 30%, rgba(229, 35, 41, 0.15) 0%, transparent 70%),
+              rgba(255, 255, 255, 0.03);
+  border-color: rgba(229, 35, 41, 0.4);
+  box-shadow: 0 0 35px rgba(229, 35, 41, 0.2);
+}
+
+.disco-ambient-lights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.2), transparent 40%),
+              radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.2), transparent 40%),
+              radial-gradient(circle at 50% 80%, rgba(229, 35, 41, 0.2), transparent 40%);
+  animation: discoSpin 6s linear infinite alternate;
+}
+
+@keyframes discoSpin {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+  50% { transform: scale(1.15) rotate(180deg); opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 0.6; }
+}
+
+.lula-body-animator {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: lulaDanceGroove 1.6s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes lulaDanceGroove {
+  0% {
+    transform: translateY(0px) rotate(-3deg) scale(1);
+  }
+  25% {
+    transform: translateY(-14px) rotate(4deg) scale(1.03);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-4deg) scale(0.98);
+  }
+  75% {
+    transform: translateY(-16px) rotate(5deg) scale(1.04);
+  }
+  100% {
+    transform: translateY(0px) rotate(-3deg) scale(1);
+  }
+}
+
+.lula-avatar-circle {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 0 4px #10b981, 0 0 0 8px #f59e0b, 0 15px 35px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  background: #111;
+}
+
+.avatar-img-round {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Sunglasses Fitted on Lula */
+.sunglasses-box {
+  position: absolute;
+  top: 29.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
+  animation: shadesFloat 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes shadesFloat {
+  0% { transform: translate(-50%, -50%) rotate(-1deg); }
+  100% { transform: translate(-50%, -50%) rotate(1.5deg); }
+}
+
+.sunglasses-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@keyframes blingFlash {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+/* Brazilian Presidential Sash Across Lula */
+.presidential-sash-ribbon {
+  position: absolute;
+  bottom: 0;
+  left: -20px;
+  right: -20px;
+  height: 38px;
+  background: linear-gradient(180deg, #15803d 0%, #16a34a 30%, #facc15 30%, #facc15 70%, #16a34a 70%, #15803d 100%);
+  transform: rotate(-18deg) translateY(-8px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8;
+  border-top: 1px solid #fef08a;
+  border-bottom: 1px solid #14532d;
+}
+
+.sash-star-badge {
+  background: #eab308;
+  color: #15803d;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  border: 1px solid #fff;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+/* Dancing Hands */
+.dancing-hands {
+  position: absolute;
+  width: 240px;
+  display: flex;
+  justify-content: space-between;
+  top: 70px;
+  pointer-events: none;
+}
+
+.hand {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+.hand-l {
+  animation: handBounceL 0.8s infinite alternate ease-in-out;
+}
+.hand-r {
+  animation: handBounceR 0.8s infinite alternate ease-in-out 0.4s;
+}
+
+@keyframes handBounceL {
+  0% { transform: translateY(0) rotate(-15deg); }
+  100% { transform: translateY(-24px) rotate(15deg); }
+}
+@keyframes handBounceR {
+  0% { transform: translateY(0) rotate(15deg); }
+  100% { transform: translateY(-24px) rotate(-15deg); }
+}
+
+/* Flávio Crying Behind Prison Bars */
+.card-flavio-jail {
+  background: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.6) 0%, rgba(10, 15, 26, 0.9) 100%);
+  border-color: rgba(100, 116, 139, 0.3);
+}
+
+.jail-stage {
+  min-height: 270px;
+}
+
+.prison-cell-backdrop {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 20px;
+  background: #090d16;
+  border: 3px solid #334155;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9), 0 10px 25px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flavio-prisoner-box {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  filter: brightness(0.85) contrast(1.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.8);
+}
+
+.crying-tremble {
+  animation: cryShake 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes cryShake {
+  0% { transform: translateY(0) rotate(-1deg); }
+  100% { transform: translateY(4px) rotate(1deg); }
+}
+
+/* Fountain Tears */
+.tears-generator {
+  position: absolute;
+  top: 35%;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.tear-fountain {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.left-tear {
+  left: 36%;
+}
+
+.right-tear {
+  right: 36%;
+}
+
+.tear-drop {
+  font-size: 1.1rem;
+  display: block;
+  animation: tearFall 0.7s infinite linear;
+}
+
+.tear-drop.t1 { animation-delay: 0s; }
+.tear-drop.t2 { animation-delay: 0.25s; }
+.tear-drop.t3 { animation-delay: 0.5s; }
+
+@keyframes tearFall {
+  0% { transform: translateY(-8px) scale(0.6); opacity: 0.2; }
+  50% { opacity: 1; transform: translateY(8px) scale(1.1); }
+  100% { transform: translateY(26px) scale(0.8); opacity: 0; }
+}
+
+.crying-expression {
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* 3D Metal Jail Bars Overlay */
+.jail-bars-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.metal-bar {
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(90deg, #1e293b 0%, #64748b 45%, #f1f5f9 55%, #334155 80%, #0f172a 100%);
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.8), -2px 0 6px rgba(0, 0, 0, 0.8);
+}
+
+.metal-horizontal-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(180deg, #1e293b 0%, #64748b 50%, #0f172a 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.beam-top { top: 22px; }
+.beam-bottom { bottom: 22px; }
+
+.jail-padlock {
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
+  background: #b45309;
+  border: 2px solid #fef08a;
+  border-radius: 8px;
+  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+  z-index: 30;
+}
+
+.padlock-icon { font-size: 0.9rem; }
+.padlock-text {
+  font-family: var(--font-num);
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+/* Card Metadata */
+.card-meta {
+  text-align: center;
+}
+
+.char-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.char-desc {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+/* ========================================================
+   STAGE 2: FLÁVIO WINS (SINISTER RISADA DIABÓLICA & LUTO)
+   ======================================================== */
+.stage-arena-single {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card-flavio-diabolic {
+  background: radial-gradient(circle at 50% 40%, rgba(127, 29, 29, 0.25) 0%, rgba(9, 9, 11, 0.95) 75%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 50px rgba(220, 38, 38, 0.25);
+}
+
+.dark-sinister-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.lightning-flash-fx {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  animation: lightningStrobe 4s infinite;
+}
+
+@keyframes lightningStrobe {
+  0%, 92%, 96%, 100% { opacity: 0; }
+  93% { opacity: 0.8; }
+  94% { opacity: 0.1; }
+  95% { opacity: 0.9; }
+}
+
+.evil-smoke-swirl {
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(circle at 30% 70%, rgba(220, 38, 38, 0.2), transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(88, 28, 135, 0.2), transparent 50%);
+  animation: smokeRotate 10s linear infinite;
+}
+
+@keyframes smokeRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.diabolic-glow-text {
+  color: #f87171;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+}
+
+.sinister-subtitle {
+  color: #94a3b8;
+}
+
+.diabolic-stage {
+  min-height: 290px;
+}
+
+.flavio-diabolic-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.diabolic-shake-anim {
+  animation: evilLaughShaking 0.35s infinite alternate ease-in-out;
+  transform-origin: center bottom;
+}
+
+@keyframes evilLaughShaking {
+  0% { transform: translateY(0) scale(1) rotate(-1deg); }
+  33% { transform: translateY(-8px) scale(1.04) rotate(2deg); }
+  66% { transform: translateY(2px) scale(0.98) rotate(-2deg); }
+  100% { transform: translateY(-10px) scale(1.05) rotate(1deg); }
+}
+
+.flavio-avatar-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 0 4px #000, 0 0 0 7px #7f1d1d, 0 20px 45px rgba(0, 0, 0, 0.9);
+  background: #000;
+}
+
+.diabolic-face {
+  filter: contrast(1.2) brightness(0.95);
+}
+
+/* Glowing Demonic Red Eyes */
+.demon-eyes-layer {
+  position: absolute;
+  top: 31%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.demon-eye {
+  width: 14px;
+  height: 8px;
+  background: #ff0033;
+  border-radius: 50%;
+  box-shadow: 0 0 14px #ff0000, 0 0 28px #ff0000, 0 0 42px #ff2200;
+  animation: demonEyePulse 0.4s infinite alternate;
+}
+
+@keyframes demonEyePulse {
+  0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 10px #ff0000; }
+  100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 25px #ff0000, 0 0 45px #ff0033; }
+}
+
+/* Mourning Sash (Faixa de Luto) */
+.mourning-sash-ribbon {
+  position: absolute;
+  bottom: 0;
+  left: -20px;
+  right: -20px;
+  height: 42px;
+  background: linear-gradient(180deg, #09090b 0%, #18181b 45%, #27272a 50%, #18181b 55%, #09090b 100%);
+  border-top: 1px solid #71717a;
+  border-bottom: 1px solid #52525b;
+  transform: rotate(-18deg) translateY(-8px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.mourning-sash-text {
+  font-family: var(--font-num);
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #f43f5e;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 6px rgba(244, 63, 94, 0.8);
+}
+
+.mourning-bow {
+  position: absolute;
+  right: 18px;
+  bottom: -2px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #fff;
+  background: #000;
+  border: 1px solid #71717a;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* Floating Diabolic Laughter Text */
+.diabolic-laughter-floating {
+  position: absolute;
+  inset: -30px -40px;
+  pointer-events: none;
+}
+
+.laugh-text {
+  position: absolute;
+  font-family: var(--font-main);
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ef4444;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(239, 68, 68, 0.8);
+  letter-spacing: 0.05em;
+  animation: laughFloat 1.2s infinite ease-in-out alternate;
+}
+
+.laugh-text.l1 { top: 0px; left: -20px; animation-delay: 0s; }
+.laugh-text.l2 { top: 15px; right: -25px; animation-delay: 0.3s; font-size: 1.3rem; }
+.laugh-text.l3 { bottom: 20px; left: -30px; animation-delay: 0.6s; font-size: 1rem; }
+.laugh-text.l4 { bottom: -10px; right: -15px; animation-delay: 0.9s; }
+
+@keyframes laughFloat {
+  0% { transform: translateY(0) scale(0.9) rotate(-4deg); opacity: 0.7; }
+  100% { transform: translateY(-16px) scale(1.15) rotate(4deg); opacity: 1; }
+}
+
+/* Floating Reopen Button */
+.reopen-outcome-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: floatBounce 2s infinite ease-in-out;
+}
+
+.reopen-outcome-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Responsive Modal */
+@media (max-width: 900px) {
+  .stage-arena-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .stage-title {
+    font-size: 1.4rem;
+  }
+  .outcome-dialog {
+    padding: 24px 20px;
+  }
+}
+

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apuração 2º Turno Presidencial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="clean-mode">
+  <div class="layout-container">
+    <!-- Mourning Banner (Triggered when Flávio wins) -->
+    <div id="mourning-banner" class="mourning-banner hidden">
+      <div class="mourning-content">
+        <span class="mourning-icon">🏴</span>
+        <div class="mourning-text">
+          <strong>LUTO OFICIAL DECLARADO • APURAÇÃO CONCLUÍDA</strong>
+          <span>O país entrou em escala de cinza após a vitória de Flávio Bolsonaro.</span>
+        </div>
+      </div>
+      <div class="mourning-actions">
+        <button id="btn-reopen-diabolic" class="mourning-btn-reopen">👁️ Ver Risada Diabólica</button>
+        <button id="btn-clear-mourning" class="mourning-btn-restore">🌈 Restaurar Cores</button>
+      </div>
+    </div>
+
+    <!-- Top Header & Urnas Progress -->
+    <header class="clean-header">
+      <div class="header-info">
+        <span class="live-pill"><span class="dot"></span> AO VIVO • TSE</span>
+        <h1 class="page-heading">ELEIÇÃO PRESIDENCIAL • 2º TURNO</h1>
+      </div>
+
+      <div class="urnas-summary">
+        <div class="urnas-labels">
+          <span class="urnas-title">URNAS APURADAS</span>
+          <span class="urnas-number" id="urnas-pct">0,00%</span>
+        </div>
+        <div class="urnas-progress-track">
+          <div class="urnas-progress-bar" id="urnas-bar" style="width: 0%;"></div>
+        </div>
+        <div class="urnas-subinfo">
+          <span id="urnas-detail">0 de 472.075 seções</span>
+          <span class="update-countdown">Próxima atualização em: <strong id="countdown-timer">05:00</strong></span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="sim-buttons-group">
+          <button id="btn-test-lula" class="sim-btn btn-sim-lula" title="Simular 100% de apuração com Lula Eleito">
+            🎉 Lula 100%
+          </button>
+          <button id="btn-test-flavio" class="sim-btn btn-sim-flavio" title="Simular 100% de apuração com Flávio Eleito">
+            ⚡ Flávio 100%
+          </button>
+          <button id="btn-reset-sim" class="sim-btn btn-sim-reset" title="Restaurar dados iniciais">
+            ↺ Reset
+          </button>
+        </div>
+        <button id="btn-refresh-now" class="refresh-btn" title="Atualizar dados imediatamente">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/></svg>
+          Atualizar
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Side-by-Side Candidate Cards -->
+    <main class="battle-arena">
+      <!-- Lula Card -->
+      <section class="hero-candidate-card cand-lula" id="card-lula">
+        <div class="winner-tag hidden" id="tag-lula">ELEITO</div>
+
+        <!-- Big Circular Photo with Circular Vote Progress Gauge -->
+        <div class="hero-avatar-wrapper">
+          <svg class="circular-progress-svg" viewBox="0 0 260 260">
+            <circle class="circle-base" cx="130" cy="130" r="118" />
+            <circle class="circle-active circle-lula" id="gauge-lula" cx="130" cy="130" r="118" />
+          </svg>
+          <div class="hero-photo-frame">
+            <img src="assets/lula.jpg" alt="Luiz Inácio Lula da Silva" class="hero-img">
+          </div>
+          <div class="party-badge badge-lula">13</div>
+        </div>
+
+        <div class="hero-candidate-info">
+          <h2 class="hero-name">Lula</h2>
+          <span class="hero-party">PT • BRASIL DA ESPERANÇA</span>
+        </div>
+
+        <div class="hero-vote-display">
+          <div class="vote-percent percent-lula" id="pct-lula">0,00%</div>
+          <div class="vote-count" id="votes-lula">0 votos</div>
+        </div>
+      </section>
+
+      <!-- Central VS & Lead Difference -->
+      <div class="vs-divider">
+        <span class="vs-text">VS</span>
+        <div class="diff-badge" id="diff-badge">
+          <span class="diff-label">Diferença</span>
+          <span class="diff-val" id="diff-votes">0 votos</span>
+          <span class="diff-pp" id="diff-pp">0,00 p.p.</span>
+        </div>
+      </div>
+
+      <!-- Flávio Bolsonaro Card -->
+      <section class="hero-candidate-card cand-flavio" id="card-flavio">
+        <div class="winner-tag hidden" id="tag-flavio">ELEITO</div>
+
+        <!-- Big Circular Photo with Circular Vote Progress Gauge -->
+        <div class="hero-avatar-wrapper">
+          <svg class="circular-progress-svg" viewBox="0 0 260 260">
+            <circle class="circle-base" cx="130" cy="130" r="118" />
+            <circle class="circle-active circle-flavio" id="gauge-flavio" cx="130" cy="130" r="118" />
+          </svg>
+          <div class="hero-photo-frame">
+            <img src="assets/flavio.jpg" alt="Flávio Bolsonaro" class="hero-img">
+          </div>
+          <div class="party-badge badge-flavio">22</div>
+        </div>
+
+        <div class="hero-candidate-info">
+          <h2 class="hero-name">Flávio Bolsonaro</h2>
+          <span class="hero-party">PL • PARTIDO LIBERAL</span>
+        </div>
+
+        <div class="hero-vote-display">
+          <div class="vote-percent percent-flavio" id="pct-flavio">0,00%</div>
+          <div class="vote-count" id="votes-flavio">0 votos</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Horizontal Comparison Bar -->
+    <div class="ratio-track-container">
+      <div class="ratio-track">
+        <div class="bar-lula" id="ratio-lula" style="width: 50%;"></div>
+        <div class="bar-flavio" id="ratio-flavio" style="width: 50%;"></div>
+        <div class="mark-half" title="50% dos votos"><span>50%</span></div>
+      </div>
+    </div>
+
+    <!-- Minimal Stats Bar -->
+    <footer class="clean-footer">
+      <div class="stat-pill">
+        <span class="label">VOTOS VÁLIDOS</span>
+        <strong id="stat-valid">0</strong>
+      </div>
+      <div class="stat-pill">
+        <span class="label">TOTAL DE VOTOS</span>
+        <strong id="stat-total">0</strong>
+      </div>
+      <div class="stat-pill">
+        <span class="label">BRANCOS</span>
+        <strong id="stat-blank">0 (0,00%)</strong>
+      </div>
+      <div class="stat-pill">
+        <span class="label">NULOS</span>
+        <strong id="stat-null">0 (0,00%)</strong>
+      </div>
+      <div class="stat-pill">
+        <span class="label">ABSTENÇÕES</span>
+        <strong id="stat-abstention">0 (0,00%)</strong>
+      </div>
+      <div class="stat-pill update-pill">
+        <span class="label">ÚLTIMO REGISTRO</span>
+        <strong id="stat-timestamp">--:--:--</strong>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Final Outcome Celebration & Mourning Modal -->
+  <div id="outcome-modal" class="outcome-modal hidden" role="dialog" aria-modal="true">
+    <div class="outcome-backdrop" id="outcome-backdrop"></div>
+    <canvas id="outcome-canvas" class="outcome-canvas"></canvas>
+
+    <div class="outcome-dialog">
+      <div class="outcome-header-bar">
+        <div class="outcome-header-left">
+          <span class="pulse-ring-dot"></span>
+          <span class="outcome-badge" id="outcome-badge-text">100% DAS URNAS APURADAS</span>
+        </div>
+        <div class="outcome-header-actions">
+          <button id="btn-toggle-sound" class="modal-sound-btn" title="Ligar/Desligar Efeitos Sonoros">
+            <span id="sound-icon">🔊</span>
+            <span id="sound-status">Som Ligado</span>
+          </button>
+          <button id="btn-close-outcome" class="modal-close-btn" title="Fechar e inspecionar painel">
+            ✕ Fechar (Ver Painel)
+          </button>
+        </div>
+      </div>
+
+      <!-- STAGE 1: LULA WINS (Dancing, Smiling, Sunglasses, Sash + Flávio Crying Behind Bars) -->
+      <div id="stage-lula-winner" class="stage-body hidden">
+        <div class="stage-title-wrap">
+          <h2 class="stage-title lula-glow-text">🎉 VITÓRIA HISTÓRICA: LULA É ELEITO PRESIDENTE!</h2>
+          <p class="stage-subtitle">O Brasil comemora nas ruas • Lula dança com óculos escuros enquanto Flávio chora na prisão</p>
+        </div>
+
+        <div class="stage-arena-grid">
+          <!-- Lula: Dancing, Smiling, Sunglasses, Presidential Sash -->
+          <div class="outcome-card card-lula-celebration">
+            <div class="disco-ambient-lights"></div>
+            <div class="card-role-pill gold-pill">🇧🇷 PRESIDENTE ELEITO</div>
+            
+            <div class="character-stage lula-dance-stage">
+              <div class="lula-body-animator">
+                <!-- Circular framed head with accessories -->
+                <div class="lula-avatar-circle">
+                  <img src="assets/lula.jpg" alt="Lula Dançando" class="avatar-img-round">
+
+                  <!-- Realistic Designer Sunglasses Fitted on Lula's Face -->
+                  <div class="sunglasses-box">
+                    <svg viewBox="0 0 100 32" class="sunglasses-svg" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <!-- Glossy black/carbon frame gradient -->
+                        <linearGradient id="frameGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#2d333b"/>
+                          <stop offset="40%" stop-color="#161b22"/>
+                          <stop offset="100%" stop-color="#05070a"/>
+                        </linearGradient>
+                        <!-- Deep polarized dark glass with realistic sheen -->
+                        <linearGradient id="lensGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#1f2937"/>
+                          <stop offset="50%" stop-color="#0f172a"/>
+                          <stop offset="100%" stop-color="#020617"/>
+                        </linearGradient>
+                        <!-- Realistic sunlight glare reflection -->
+                        <linearGradient id="reflectionGrad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="rgba(255,255,255,0.65)"/>
+                          <stop offset="25%" stop-color="rgba(255,255,255,0.15)"/>
+                          <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+                          <stop offset="70%" stop-color="rgba(255,255,255,0.1)"/>
+                          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                        </linearGradient>
+                        <!-- Gold hinge rivets -->
+                        <linearGradient id="goldRivets" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#fef08a"/>
+                          <stop offset="100%" stop-color="#eab308"/>
+                        </linearGradient>
+                      </defs>
+                      
+                      <!-- Top Browline Frame with Sculpted Bridge -->
+                      <path d="M 4 8 C 24 4, 38 6, 45 8 C 48 9, 52 9, 55 8 C 62 6, 76 4, 96 8 C 98 9, 99 11, 98 13 C 96 22, 90 28, 77 30 C 65 31, 57 24, 55 16 C 53 14, 47 14, 45 16 C 43 24, 35 31, 23 30 C 10 28, 4 22, 2 13 C 1 11, 2 9, 4 8 Z" fill="url(#frameGrad)" stroke="#090d12" stroke-width="0.8"/>
+                      
+                      <!-- Left Lens -->
+                      <path d="M 8 10 C 22 7, 36 9, 44 11 C 41 20, 35 27, 24 27 C 14 27, 8 20, 7 12 C 7 11, 7.5 10.3, 8 10 Z" fill="url(#lensGrad)"/>
+                      <!-- Left Lens Glare Streak -->
+                      <path d="M 12 10 L 22 9 L 16 26 L 10 24 Z" fill="url(#reflectionGrad)"/>
+                      
+                      <!-- Right Lens -->
+                      <path d="M 56 11 C 64 9, 78 7, 92 10 C 92.5 10.3, 93 11, 93 12 C 92 20, 86 27, 76 27 C 65 27, 59 20, 56 11 Z" fill="url(#lensGrad)"/>
+                      <!-- Right Lens Glare Streak -->
+                      <path d="M 64 10 L 74 9 L 68 26 L 62 24 Z" fill="url(#reflectionGrad)"/>
+
+                      <!-- Keyhole Bridge Arch -->
+                      <path d="M 47 11 Q 50 13 53 11" stroke="#334155" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+                      <!-- Tiny Gold Corner Rivets -->
+                      <circle cx="5" cy="9.5" r="1.1" fill="url(#goldRivets)"/>
+                      <circle cx="95" cy="9.5" r="1.1" fill="url(#goldRivets)"/>
+                    </svg>
+                  </div>
+
+                  <!-- Real Brazilian Presidential Sash across Lula -->
+                  <div class="presidential-sash-ribbon">
+                    <div class="sash-stripe-g"></div>
+                    <div class="sash-stripe-y"></div>
+                    <div class="sash-stripe-g"></div>
+                    <div class="sash-star-badge">★</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-meta">
+              <h3 class="char-name">Luiz Inácio Lula da Silva</h3>
+              <p class="char-desc">Dançando, sorrindo e esbanjando estilo de óculos escuros!</p>
+            </div>
+          </div>
+
+          <!-- Flávio: Crying, Behind Iron Bars in Prison Cell -->
+          <div class="outcome-card card-flavio-jail">
+            <div class="card-role-pill red-pill">🔒 CONDENADO / DERROTADO</div>
+
+            <div class="character-stage jail-stage">
+              <!-- Dark Cell Background -->
+              <div class="prison-cell-backdrop">
+                <div class="cell-wall-texture"></div>
+
+                <!-- Flávio Portrait Crying Inside -->
+                <div class="flavio-prisoner-box crying-tremble">
+                  <img src="assets/flavio.jpg" alt="Flávio Preso" class="avatar-img-round avatar-crying">
+
+                  <!-- Animated Fountain Tears -->
+                  <div class="tears-generator">
+                    <div class="tear-fountain left-tear">
+                      <span class="tear-drop t1">💧</span>
+                      <span class="tear-drop t2">💧</span>
+                      <span class="tear-drop t3">💧</span>
+                    </div>
+                    <div class="tear-fountain right-tear">
+                      <span class="tear-drop t1">💧</span>
+                      <span class="tear-drop t2">💧</span>
+                      <span class="tear-drop t3">💧</span>
+                    </div>
+                    <div class="crying-expression">😭😭😭</div>
+                  </div>
+                </div>
+
+                <!-- 3D Heavy Iron Prison Bars with Padlock -->
+                <div class="jail-bars-overlay">
+                  <div class="metal-bar bar-1"></div>
+                  <div class="metal-bar bar-2"></div>
+                  <div class="metal-bar bar-3"></div>
+                  <div class="metal-bar bar-4"></div>
+                  <div class="metal-bar bar-5"></div>
+                  <div class="metal-horizontal-beam beam-top"></div>
+                  <div class="metal-horizontal-beam beam-bottom"></div>
+                  <div class="jail-padlock">
+                    <span class="padlock-icon">🔒</span>
+                    <span class="padlock-text">PAPUDA</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-meta">
+              <h3 class="char-name">Flávio Bolsonaro</h3>
+              <p class="char-desc">Atrás das grades de ferro, chorando copiosamente aos prantos!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 2: FLÁVIO WINS (Sinister Diabolic Laugh, Grayscale, Mourning Sash) -->
+      <div id="stage-flavio-winner" class="stage-body hidden">
+        <div class="stage-title-wrap sinister-title-wrap">
+          <h2 class="stage-title diabolic-glow-text">⚡ FLÁVIO BOLSONARO VENCE: BRASIL EM ESCALA DE CINZA</h2>
+          <p class="stage-subtitle sinister-subtitle">Uma risada diabólica ecoa pelo país • Faixa de luto no lugar da faixa presidencial</p>
+        </div>
+
+        <div class="stage-arena-single">
+          <!-- Flávio: Sinister Evil Laugh & Mourning Sash -->
+          <div class="outcome-card card-flavio-diabolic">
+            <div class="dark-sinister-bg">
+              <div class="lightning-flash-fx"></div>
+              <div class="evil-smoke-swirl"></div>
+            </div>
+
+            <div class="card-role-pill black-pill">🏴 FAIXA DE LUTO OFICIAL</div>
+
+            <div class="character-stage diabolic-stage">
+              <div class="flavio-diabolic-box diabolic-shake-anim">
+                <div class="flavio-avatar-circle">
+                  <img src="assets/flavio.jpg" alt="Flávio Risada Diabólica" class="avatar-img-round diabolic-face">
+
+                  <!-- Glowing Demonic Red Eyes -->
+                  <div class="demon-eyes-layer">
+                    <div class="demon-eye eye-left"></div>
+                    <div class="demon-eye eye-right"></div>
+                  </div>
+
+                  <!-- Mourning Sash instead of Presidential Sash -->
+                  <div class="mourning-sash-ribbon">
+                    <div class="sash-black-band">
+                      <span class="mourning-sash-text">✦ FAIXA DE LUTO ✦</span>
+                    </div>
+                    <div class="mourning-bow">🎗️ LUTO</div>
+                  </div>
+                </div>
+
+                <!-- Floating Evil Laughter Text Clouds -->
+                <div class="diabolic-laughter-floating">
+                  <span class="laugh-text l1">MUAHAHAHA!</span>
+                  <span class="laugh-text l2">HA! HA! HA!</span>
+                  <span class="laugh-text l3">😈 MUAHAHA!</span>
+                  <span class="laugh-text l4">HAHAHAHA!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-meta">
+              <h3 class="char-name">Flávio Bolsonaro</h3>
+              <p class="char-desc">Risada diabólica e faixa de luto oficial. Todo o painel em escala de cinza.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Reopen Button -->
+  <button id="btn-reopen-outcome" class="reopen-outcome-btn hidden" title="Reabrir animação da vitória">
+    <span class="reopen-icon">🏆</span>
+    <span id="reopen-text">Ver Animação Final</span>
+  </button>
+
+  <script src="app.js"></script>
+</body>
+</html>
